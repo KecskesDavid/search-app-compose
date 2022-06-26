@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NewAppCompose</string>
+    <string name="content">Content of my app</string>
 </resources>

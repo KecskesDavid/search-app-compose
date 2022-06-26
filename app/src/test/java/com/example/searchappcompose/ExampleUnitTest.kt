@@ -1,4 +1,4 @@
-package com.example.newappcompose
+package com.example.searchappcompose
 
 import org.junit.Test
 
