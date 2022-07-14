@@ -1,9 +1,9 @@
 package com.example.searchappcompose.app.main
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -11,48 +11,42 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import com.example.searchappcompose.R
-import com.example.searchappcompose.app.theme.SearchAppComposeTheme
+import com.example.searchappcompose.app.chip_list.CategoryList
+import com.example.searchappcompose.app.model.SearchCategory
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
 
     val appBarState by mainViewModel.appBarState
     val searchQuery by mainViewModel.searchQuery
 
-    // Saving state in compose -> using remember keyword
-    val testClass by rememberSaveable {
-        mutableStateOf(User("", ""))
-    }
-
-    Column {
-        SearchAppComposeTheme {
-            MainScreenMainAppBar(
-                appBarState,
-                searchQuery = searchQuery,
-                onSearchIconClick = {
-                    mainViewModel.updateAppBarState(AppBarState.OPENED)
-                },
-                closeIconClick = {
-                    mainViewModel.updateAppBarState(AppBarState.CLOSED)
-                }
-            ) {
-                mainViewModel.updateSearchQuery(it)
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        MainScreenMainAppBar(
+            appBarState,
+            searchQuery = searchQuery,
+            onSearchIconClick = {
+                mainViewModel.updateAppBarState(AppBarState.OPENED)
+            },
+            closeIconClick = {
+                mainViewModel.updateAppBarState(AppBarState.CLOSED)
             }
+        ) {
+            mainViewModel.updateSearchQuery(it)
         }
+
+        CategoryList(content = getDummyData(), {})
     }
 }
 
@@ -70,12 +64,7 @@ fun MainScreenMainAppBar(
         transitionSpec = {
             when (targetState) {
                 AppBarState.OPENED -> {
-                    slideInHorizontally { height -> height } + fadeIn(
-                        animationSpec = tween(
-                            220,
-                            0
-                        )
-                    ) with
+                    slideInHorizontally { height -> height } + fadeIn() with
                             slideOutHorizontally { height -> -height } + fadeOut()
                 }
                 AppBarState.CLOSED -> {
@@ -166,3 +155,10 @@ fun MainScreenTopSearchBar(
 private fun onSearchClick() {
 
 }
+
+private fun getDummyData() = mutableListOf(
+    SearchCategory("Politics", iconId = null),
+    SearchCategory("Sport", iconId = null),
+    SearchCategory("News", iconId = null, isSelected = true),
+    SearchCategory("Other", iconId = null),
+)
