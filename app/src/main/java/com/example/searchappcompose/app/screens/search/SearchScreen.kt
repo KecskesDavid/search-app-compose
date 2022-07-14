@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.main
+package com.example.searchappcompose.app.screens.main
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -22,10 +22,12 @@ import androidx.compose.ui.text.TextStyle
 import com.example.searchappcompose.R
 import com.example.searchappcompose.app.chip_list.CategoryList
 import com.example.searchappcompose.app.model.SearchCategory
+import com.example.searchappcompose.app.screens.search.AppBarState
+import com.example.searchappcompose.app.screens.search.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel) {
+fun SearchScreen(mainViewModel: SearchViewModel) {
 
     val appBarState by mainViewModel.appBarState
     val searchQuery by mainViewModel.searchQuery

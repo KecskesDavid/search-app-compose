@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NewAppCompose</string>
     <string name="content">Content of my app</string>
+
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
 </resources>

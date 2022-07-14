@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.main
+package com.example.searchappcompose.app.screens.search
 
 enum class AppBarState {
     OPENED, CLOSED

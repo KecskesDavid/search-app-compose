@@ -1,4 +1,8 @@
 package com.example.searchappcompose.app.screens.favorites
 
-class FavoritesScreen {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun FavoritesScreen() {
+
 }

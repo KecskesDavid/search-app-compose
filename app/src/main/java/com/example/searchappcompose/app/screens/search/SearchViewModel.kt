@@ -1,11 +1,11 @@
-package com.example.searchappcompose.app.main
+package com.example.searchappcompose.app.screens.search
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
-class MainViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     private var _appBarState: MutableState<AppBarState> =
         mutableStateOf(value = AppBarState.CLOSED)
