@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -24,28 +23,31 @@ import com.example.searchappcompose.app.chip_list.CategoryList
 import com.example.searchappcompose.app.model.SearchCategory
 import com.example.searchappcompose.app.screens.search.AppBarState
 import com.example.searchappcompose.app.screens.search.SearchViewModel
+import androidx.compose.material3.MaterialTheme as theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(mainViewModel: SearchViewModel) {
+fun SearchScreen(searchViewModel: SearchViewModel) {
 
-    val appBarState by mainViewModel.appBarState
-    val searchQuery by mainViewModel.searchQuery
+    val appBarState by searchViewModel.appBarState
+    val searchQuery by searchViewModel.searchQuery
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(theme.colorScheme.primary),
     ) {
         MainScreenMainAppBar(
             appBarState,
             searchQuery = searchQuery,
             onSearchIconClick = {
-                mainViewModel.updateAppBarState(AppBarState.OPENED)
+                searchViewModel.updateAppBarState(AppBarState.OPENED)
             },
             closeIconClick = {
-                mainViewModel.updateAppBarState(AppBarState.CLOSED)
+                searchViewModel.updateAppBarState(AppBarState.CLOSED)
             }
         ) {
-            mainViewModel.updateSearchQuery(it)
+            searchViewModel.updateSearchQuery(it)
         }
 
         CategoryList(content = getDummyData(), {})
@@ -120,8 +122,7 @@ fun MainScreenTopSearchBar(
         title = {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White),
+                    .fillMaxWidth(),
                 value = text,
                 onValueChange = { onValueChange(it) },
                 placeholder = {
@@ -133,7 +134,13 @@ fun MainScreenTopSearchBar(
                 textStyle = TextStyle(
                     fontSize = MaterialTheme.typography.subtitle1.fontSize
                 ),
-                singleLine = true
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    cursorColor = theme.colorScheme.secondary,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    containerColor = theme.colorScheme.primary
+                ),
             )
         },
         navigationIcon = {

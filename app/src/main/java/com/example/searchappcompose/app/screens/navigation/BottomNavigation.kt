@@ -2,14 +2,20 @@ package com.example.searchappcompose.app.screens.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.searchappcompose.R
 
 sealed class BottomNavigationScreens(
@@ -42,13 +48,19 @@ sealed class BottomNavigationScreens(
 
 @Composable
 fun SearchAppBottomBar(navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     BottomNavigation {
+        println(MaterialTheme.colorScheme.onSurface)
         BottomNavigationScreens.screens.forEach { screen ->
             BottomNavigationItem(
-                selected = navController.currentDestination?.route?.equals(screen.route) ?: false,
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = { navController.navigate(screen.route) },
                 label = {
-                    Text(text = stringResource(id = screen.label))
+                    Text(
+                        text = stringResource(id = screen.label),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 },
                 icon = {
                     Icon(
@@ -56,7 +68,9 @@ fun SearchAppBottomBar(navController: NavHostController) {
                         contentDescription = stringResource(id = screen.label)
                     )
                 },
-                alwaysShowLabel = false
+                alwaysShowLabel = false,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
             )
         }
     }
