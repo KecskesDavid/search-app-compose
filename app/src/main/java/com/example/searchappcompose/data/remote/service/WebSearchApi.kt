@@ -11,7 +11,7 @@ interface WebSearchApi {
         @Query("q") query: String,
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
-        @Query("autoCorrect") autoCorrect: Boolean,
+        @Query("autoCorrect") autoCorrect: Boolean = true,
         @Query("withThumbnails") withThumbnails: Boolean = true,
     ) : NewsDataDTO
 }
