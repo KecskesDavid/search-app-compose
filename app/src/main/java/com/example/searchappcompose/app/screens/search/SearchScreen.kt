@@ -29,6 +29,8 @@ import androidx.compose.material3.MaterialTheme as theme
 @Composable
 fun SearchScreen(searchViewModel: SearchViewModel) {
 
+    searchViewModel.getNews()
+
     val appBarState by searchViewModel.appBarState
     val searchQuery by searchViewModel.searchQuery
 

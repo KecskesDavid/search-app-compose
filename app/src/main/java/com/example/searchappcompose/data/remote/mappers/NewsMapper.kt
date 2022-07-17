@@ -5,7 +5,7 @@ import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
 
 fun NewsDataDTO.toNews(): News {
-    return News(news.map {
+    return News(value.map {
         NewsInfo(
             it.id,
             it.title,

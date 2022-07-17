@@ -3,6 +3,8 @@ package com.example.searchappcompose.data.remote.di
 import com.example.searchappcompose.BuildConfig
 import com.example.searchappcompose.data.remote.consts.Constants
 import com.example.searchappcompose.data.remote.service.WebSearchApi
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +30,8 @@ object NetworkModule {
         okHttpBuilder.addInterceptor(Interceptor { chain ->
 
             val original = chain.request().newBuilder().apply {
-                addHeader(Constants.X_RAPIDAPI_KEY, BuildConfig.X_RAPIDAPI_KEY_SECRET)
-                addHeader(Constants.X_RAPIDAPI_HOST, BuildConfig.X_RAPIDAPI_HOST_SECRET)
+                header(Constants.X_RAPIDAPI_KEY, BuildConfig.X_RAPIDAPI_KEY_SECRET)
+                header(Constants.X_RAPIDAPI_HOST, BuildConfig.X_RAPIDAPI_HOST_SECRET)
             }
 
             chain.proceed(original.build())
@@ -41,10 +43,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideWebSearchApi(okHttpClient: OkHttpClient): WebSearchApi {
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
         return Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()
     }

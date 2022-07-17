@@ -12,21 +12,25 @@ import com.example.searchappcompose.app.screens.navigation.SearchAppBottomBar
 import com.example.searchappcompose.app.screens.navigation.SearchAppNavHost
 import com.example.searchappcompose.app.screens.search.SearchViewModel
 import com.example.searchappcompose.app.theme.SearchAppComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val mainViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SearchApp()
+            SearchApp(
+                searchViewModel
+            )
         }
     }
 }
 
 @Composable
-fun SearchApp() {
+fun SearchApp(searchViewModel: SearchViewModel) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
@@ -36,7 +40,8 @@ fun SearchApp() {
             bottomBar = { SearchAppBottomBar(navController) }
         ) {
             SearchAppNavHost(
-                navController
+                navController,
+                searchViewModel
             )
         }
     }

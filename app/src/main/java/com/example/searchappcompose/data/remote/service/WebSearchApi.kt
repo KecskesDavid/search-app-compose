@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface WebSearchApi {
 
-    @GET("search/NewsSearchAPI")
+    @GET("search/NewsSearchAPI/")
     suspend fun getNews(
         @Query("q") query: String,
         @Query("pageNumber") pageNumber: Int,

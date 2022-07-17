@@ -4,5 +4,5 @@ import com.squareup.moshi.Json
 
 data class NewsDataDTO(
     @field:Json(name="value")
-    val news: List<NewsDTO>
+    val value: List<NewsDTO>
 )
