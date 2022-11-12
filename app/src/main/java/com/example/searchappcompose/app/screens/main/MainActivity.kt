@@ -1,8 +1,11 @@
 package com.example.searchappcompose.app.screens.main
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -18,9 +21,18 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val searchViewModel: SearchViewModel by viewModels()
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) {
+            searchViewModel.getNews()
+        }
+        permissionLauncher.launch(arrayOf(
+            Manifest.permission.INTERNET
+        ))
         setContent {
             SearchApp(
                 searchViewModel
