@@ -1,13 +1,14 @@
-package com.example.searchappcompose.app.screens.main
+package com.example.searchappcompose.app.screens.search
 
+//import coil.compose.AsyncImage
 import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -16,20 +17,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.searchappcompose.R
 import com.example.searchappcompose.app.chip_list.CategoryList
+import com.example.searchappcompose.app.item_divider.NewsListDivider
 import com.example.searchappcompose.app.model.SearchCategory
-import com.example.searchappcompose.app.screens.search.AppBarState
-import com.example.searchappcompose.app.screens.search.SearchViewModel
 import com.example.searchappcompose.domain.model.news.NewsInfo
-import androidx.compose.material3.MaterialTheme as theme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(searchViewModel: SearchViewModel) {
 
@@ -41,7 +44,7 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(theme.colorScheme.primary),
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         MainScreenMainAppBar(
             appBarState,
@@ -59,18 +62,19 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
         CategoryList(content = getDummyData(), {})
 
         searchViewModel.state.news?.let { news ->
-            Spacer(modifier = Modifier.padding(20.dp))
-            LazyColumn(content = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(8.dp, 0.dp)
+            ) {
                 items(news.size) { index ->
-                    NewsCard(newsInfo = news[index]) {
-                        Toast.makeText(
-                            currentContext,
-                            news[index].title + " was clicked",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                    NewsCard(
+                        newsInfo = news[index],
+                        onClick = {}
+                    )
+                    NewsListDivider()
                 }
-            })
+            }
         }
     }
 }
@@ -78,19 +82,44 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
 @Composable
 fun NewsCard(
     newsInfo: NewsInfo,
-    modifier: Modifier? = null,
     onClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(16.dp).background(Color.White)
+    Row(
+        modifier = Modifier
+            .height(90.dp)
+            .clickable { onClick.invoke() }
+            .padding(8.dp)
     ) {
-//        GlideImage(
-//            imageModel = newsInfo.imageUrl,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(300.dp)
-//        )
-        Text(text = newsInfo.title)
+        AsyncImage(
+            model = newsInfo.imageUrl,
+            contentDescription = null,
+            placeholder = painterResource(R.drawable.placeholder),
+            error = painterResource(R.drawable.placeholder),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(82.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column(
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Text(
+                text = newsInfo.datePublished,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 10.sp,
+                modifier = Modifier
+                    .alpha(alpha = 0.3f)
+                    .padding(top = 4.dp)
+            )
+            Text(
+                text = newsInfo.title,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
     }
 }
 
@@ -172,14 +201,14 @@ fun MainScreenTopSearchBar(
                     )
                 },
                 textStyle = TextStyle(
-                    fontSize = MaterialTheme.typography.subtitle1.fontSize
+                    fontSize = 11.sp
                 ),
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    cursorColor = theme.colorScheme.secondary,
+                    cursorColor = MaterialTheme.colorScheme.secondary,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    containerColor = theme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
             )
         },
