@@ -51,7 +51,6 @@ fun SearchAppBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     BottomNavigation {
-        println(MaterialTheme.colorScheme.onSurface)
         BottomNavigationScreens.screens.forEach { screen ->
             BottomNavigationItem(
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,

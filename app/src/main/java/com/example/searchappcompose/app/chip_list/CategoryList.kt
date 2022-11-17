@@ -1,10 +1,8 @@
 package com.example.searchappcompose.app.chip_list
 
+import android.widget.Space
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.MaterialTheme
@@ -39,10 +37,13 @@ fun CategoryList(
     val scrollState = rememberScrollState()
 
     Row(
-        modifier = Modifier.horizontalScroll(scrollState)
+        modifier = Modifier
+            .horizontalScroll(scrollState)
+            .padding(8.dp)
     ) {
         content.forEach {
             CategoryChip(category = it, onSearchClick)
+            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
@@ -55,7 +56,6 @@ fun CategoryChip(
     Surface(
         color = if (category.isSelected) Color.Gray else MaterialTheme.colorScheme.secondary,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(8.dp),
     ) {
         Row(
             modifier = Modifier
@@ -69,8 +69,7 @@ fun CategoryChip(
             Text(
                 text = category.categoryName,
                 modifier = Modifier.padding(8.dp),
-//                color = if(category.isSelected) Color.Black else Color.White,
-                color = Color.White
+                color = if (category.isSelected) Color.White else MaterialTheme.colorScheme.onSurface
             )
         }
     }
