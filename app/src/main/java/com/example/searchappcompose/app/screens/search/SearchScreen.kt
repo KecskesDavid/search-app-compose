@@ -26,7 +26,8 @@ import com.example.searchappcompose.R
 import com.example.searchappcompose.app.core.ui.chip_list.CategoryList
 import com.example.searchappcompose.app.core.ui.item_divider.NewsListDivider
 import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay
-import com.example.searchappcompose.app.model.SearchCategory
+import com.example.searchappcompose.app.core.util.DateUtil
+import com.example.searchappcompose.app.core.models.SearchCategory
 import com.example.searchappcompose.domain.model.news.NewsInfo
 
 @Composable
@@ -105,21 +106,21 @@ fun NewsCard(
             modifier = Modifier.fillMaxHeight()
         ) {
             Text(
-                text = newsInfo.datePublished,
+                text = DateUtil.toNewsCardTimestamp(newsInfo.datePublished),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 10.sp,
                 modifier = Modifier
                     .alpha(alpha = 0.3f)
                     .padding(top = 4.dp),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = newsInfo.title,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

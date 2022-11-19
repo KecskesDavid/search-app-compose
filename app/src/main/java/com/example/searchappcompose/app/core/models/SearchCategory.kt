@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.model
+package com.example.searchappcompose.app.core.models
 
 data class SearchCategory(
     val categoryName: String,
