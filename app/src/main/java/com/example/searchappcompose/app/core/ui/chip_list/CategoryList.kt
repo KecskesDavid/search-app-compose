@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.chip_list
+package com.example.searchappcompose.app.core.ui.chip_list
 
 import android.widget.Space
 import androidx.compose.foundation.horizontalScroll

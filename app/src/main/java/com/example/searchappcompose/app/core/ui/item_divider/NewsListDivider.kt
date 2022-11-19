@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.item_divider
+package com.example.searchappcompose.app.core.ui.item_divider
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

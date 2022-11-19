@@ -1,7 +1,6 @@
 package com.example.searchappcompose.data.remote.di
 
 import com.example.searchappcompose.data.remote.repository.FakeNewsRepositoryImpl
-import com.example.searchappcompose.data.remote.repository.NewsRepositoryImpl
 import com.example.searchappcompose.domain.repository.NewsRepository
 import dagger.Binds
 import dagger.Module
@@ -16,7 +15,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindNewsRepository(
-//        newsRepositoryImpl: NewsRepositoryImpl
+        // newsRepositoryImpl: NewsRepositoryImpl
         fakeNewsRepositoryImpl: FakeNewsRepositoryImpl
     ): NewsRepository
 }
