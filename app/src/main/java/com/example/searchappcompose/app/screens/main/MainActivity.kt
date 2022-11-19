@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.example.searchappcompose.app.screens.details.DetailViewModel
 import com.example.searchappcompose.app.screens.navigation.SearchAppBottomBar
 import com.example.searchappcompose.app.screens.navigation.SearchAppNavHost
 import com.example.searchappcompose.app.screens.search.SearchViewModel
@@ -24,6 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val searchViewModel: SearchViewModel by viewModels()
+    private val detailViewModel: DetailViewModel by viewModels()
+
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,14 +43,15 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             SearchApp(
-                searchViewModel
+                searchViewModel,
+                detailViewModel
             )
         }
     }
 }
 
 @Composable
-fun SearchApp(searchViewModel: SearchViewModel) {
+fun SearchApp(searchViewModel: SearchViewModel, detailViewModel: DetailViewModel) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
@@ -60,6 +64,7 @@ fun SearchApp(searchViewModel: SearchViewModel) {
             SearchAppNavHost(
                 navController,
                 searchViewModel,
+                detailViewModel,
                 modifier = Modifier.padding(it)
             )
         }

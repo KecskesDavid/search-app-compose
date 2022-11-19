@@ -21,17 +21,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.searchappcompose.R
+import com.example.searchappcompose.app.core.models.SearchCategory
 import com.example.searchappcompose.app.core.ui.chip_list.CategoryList
 import com.example.searchappcompose.app.core.ui.item_divider.NewsListDivider
 import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay
 import com.example.searchappcompose.app.core.util.DateUtil
-import com.example.searchappcompose.app.core.models.SearchCategory
+import com.example.searchappcompose.app.screens.navigation.Screen
 import com.example.searchappcompose.domain.model.news.NewsInfo
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel) {
+fun SearchScreen(searchViewModel: SearchViewModel, navController: NavHostController) {
 
     val state = searchViewModel.state
 
@@ -70,7 +74,16 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
                     items(news.size) { index ->
                         NewsCard(
                             newsInfo = news[index],
-                            onClick = {}
+                            onClick = {
+                                navController.navigate(
+                                    Screen.DetailScreen.withArguments(
+                                        URLEncoder.encode(
+                                            news[index].url,
+                                            StandardCharsets.UTF_8.toString()
+                                        )
+                                    )
+                                )
+                            },
                         )
                         NewsListDivider()
                     }
@@ -90,6 +103,7 @@ fun NewsCard(
             .height(90.dp)
             .clickable { onClick.invoke() }
             .padding(8.dp)
+            .clickable { onClick() }
     ) {
         AsyncImage(
             model = newsInfo.imageUrl,
