@@ -10,7 +10,6 @@ import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.use_case.news.GetNewsUseCase
 import com.example.searchappcompose.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,9 +28,9 @@ class SearchViewModel @Inject constructor(
     var state by mutableStateOf(SearchScreenState())
         private set
 
-    fun onEvent(event: SearchScreenEvent) {
+    fun onEvent(event: SearchEvent) {
         when (event) {
-            is SearchScreenEvent.OnQueryEntered -> {
+            is SearchEvent.OnQueryEntered -> {
                 val searchQuery = event.query
 
                 state = state.copy(
@@ -39,7 +38,7 @@ class SearchViewModel @Inject constructor(
                 )
                 getNews(searchQuery)
             }
-            is SearchScreenEvent.OnAppBarStateChange -> {
+            is SearchEvent.OnAppBarStateChange -> {
                 state = state.copy(
                     appBarState = event.state
                 )

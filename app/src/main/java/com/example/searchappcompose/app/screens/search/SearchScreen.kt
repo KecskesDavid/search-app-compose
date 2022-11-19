@@ -44,13 +44,13 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
             state.appBarState,
             searchQuery = state.searchQuery,
             onSearchIconClick = {
-                searchViewModel.onEvent(SearchScreenEvent.OnAppBarStateChange(AppBarState.OPENED))
+                searchViewModel.onEvent(SearchEvent.OnAppBarStateChange(AppBarState.OPENED))
             },
             closeIconClick = {
-                searchViewModel.onEvent(SearchScreenEvent.OnAppBarStateChange(AppBarState.CLOSED))
+                searchViewModel.onEvent(SearchEvent.OnAppBarStateChange(AppBarState.CLOSED))
             },
             onValueChange = {
-                searchViewModel.onEvent(SearchScreenEvent.OnQueryEntered(it))
+                searchViewModel.onEvent(SearchEvent.OnQueryEntered(it))
             }
         )
 

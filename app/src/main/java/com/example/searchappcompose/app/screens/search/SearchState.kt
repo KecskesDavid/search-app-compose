@@ -9,3 +9,7 @@ data class SearchScreenState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
+
+enum class AppBarState {
+    OPENED, CLOSED
+}
