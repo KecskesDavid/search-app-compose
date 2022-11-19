@@ -1,4 +1,3 @@
 package com.example.searchappcompose.app.screens.favorites
 
-class FavoritesViewModel {
-}
+class FavoritesViewModel

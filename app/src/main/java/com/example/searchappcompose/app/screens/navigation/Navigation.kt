@@ -1,6 +1,7 @@
 package com.example.searchappcompose.app.screens.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,7 +12,8 @@ import com.example.searchappcompose.app.screens.search.SearchViewModel
 @Composable
 fun SearchAppNavHost(
     navController: NavHostController,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    modifier: Modifier? = Modifier
 ) {
     NavHost(
         navController = navController,

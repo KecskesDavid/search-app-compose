@@ -7,9 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.searchappcompose.app.screens.navigation.SearchAppBottomBar
 import com.example.searchappcompose.app.screens.navigation.SearchAppNavHost
@@ -28,11 +31,13 @@ class MainActivity : ComponentActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-            searchViewModel.getNews()
+            // searchViewModel.getNews(searchQuery)
         }
-        permissionLauncher.launch(arrayOf(
-            Manifest.permission.INTERNET
-        ))
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.INTERNET
+            )
+        )
         setContent {
             SearchApp(
                 searchViewModel
@@ -49,11 +54,13 @@ fun SearchApp(searchViewModel: SearchViewModel) {
     SearchAppComposeTheme() {
         Scaffold(
             scaffoldState = scaffoldState,
-            bottomBar = { SearchAppBottomBar(navController) }
+            bottomBar = { SearchAppBottomBar(navController) },
+            modifier = Modifier.padding(0.dp)
         ) {
             SearchAppNavHost(
                 navController,
-                searchViewModel
+                searchViewModel,
+                modifier = Modifier.padding(it)
             )
         }
     }

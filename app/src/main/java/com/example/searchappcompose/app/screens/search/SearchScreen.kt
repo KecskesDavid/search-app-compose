@@ -1,45 +1,38 @@
 package com.example.searchappcompose.app.screens.search
 
-//import coil.compose.AsyncImage
-import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.searchappcompose.R
-import com.example.searchappcompose.app.chip_list.CategoryList
-import com.example.searchappcompose.app.item_divider.NewsListDivider
+import com.example.searchappcompose.app.core.ui.chip_list.CategoryList
+import com.example.searchappcompose.app.core.ui.item_divider.NewsListDivider
+import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay
 import com.example.searchappcompose.app.model.SearchCategory
 import com.example.searchappcompose.domain.model.news.NewsInfo
 
 @Composable
 fun SearchScreen(searchViewModel: SearchViewModel) {
 
-    val appBarState by searchViewModel.appBarState
-    val searchQuery by searchViewModel.searchQuery
-
-    val currentContext = LocalContext.current
+    val state = searchViewModel.state
 
     Column(
         modifier = Modifier
@@ -47,32 +40,39 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
             .background(MaterialTheme.colorScheme.primary),
     ) {
         MainScreenMainAppBar(
-            appBarState,
-            searchQuery = searchQuery,
+            state.appBarState,
+            searchQuery = state.searchQuery,
             onSearchIconClick = {
-                searchViewModel.updateAppBarState(AppBarState.OPENED)
+                searchViewModel.onEvent(SearchScreenEvent.OnAppBarStateChange(AppBarState.OPENED))
             },
             closeIconClick = {
-                searchViewModel.updateAppBarState(AppBarState.CLOSED)
+                searchViewModel.onEvent(SearchScreenEvent.OnAppBarStateChange(AppBarState.CLOSED))
+            },
+            onValueChange = {
+                searchViewModel.onEvent(SearchScreenEvent.OnQueryEntered(it))
             }
-        ) {
-            searchViewModel.updateSearchQuery(it)
-        }
+        )
 
-        CategoryList(content = getDummyData(), {})
+        Column(modifier = Modifier.fillMaxSize()) {
+            if (state.isLoading) {
+                LoadingOverlay()
+            }
 
-        searchViewModel.state.news?.let { news ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(8.dp, 0.dp)
-            ) {
-                items(news.size) { index ->
-                    NewsCard(
-                        newsInfo = news[index],
-                        onClick = {}
-                    )
-                    NewsListDivider()
+            CategoryList(content = getDummyData(), {})
+
+            state.news?.let { news ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(8.dp, 0.dp)
+                ) {
+                    items(news.size) { index ->
+                        NewsCard(
+                            newsInfo = news[index],
+                            onClick = {}
+                        )
+                        NewsListDivider()
+                    }
                 }
             }
         }
@@ -110,7 +110,9 @@ fun NewsCard(
                 fontSize = 10.sp,
                 modifier = Modifier
                     .alpha(alpha = 0.3f)
-                    .padding(top = 4.dp)
+                    .padding(top = 4.dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = newsInfo.title,
@@ -138,11 +140,11 @@ fun MainScreenMainAppBar(
             when (targetState) {
                 AppBarState.OPENED -> {
                     slideInHorizontally { height -> height } + fadeIn() with
-                            slideOutHorizontally { height -> -height } + fadeOut()
+                        slideOutHorizontally { height -> -height } + fadeOut()
                 }
                 AppBarState.CLOSED -> {
                     slideInHorizontally { height -> -height } + fadeIn() with
-                            slideOutHorizontally { height -> height } + fadeOut()
+                        slideOutHorizontally { height -> height } + fadeOut()
                 }
             }
         }
@@ -201,7 +203,7 @@ fun MainScreenTopSearchBar(
                     )
                 },
                 textStyle = TextStyle(
-                    fontSize = 11.sp
+                    fontSize = 17.sp
                 ),
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
