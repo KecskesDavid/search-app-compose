@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -19,10 +20,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.searchappcompose.R
 
 sealed class BottomNavigationScreens(
-    val route: String,
+    route: String,
     @StringRes val label: Int,
     @DrawableRes val icon: Int
-) {
+) : Screen(route) {
     companion object {
         val screens = listOf(
             SearchScreen,
@@ -50,6 +51,7 @@ sealed class BottomNavigationScreens(
 fun SearchAppBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
     BottomNavigation {
         BottomNavigationScreens.screens.forEach { screen ->
             BottomNavigationItem(
