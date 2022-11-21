@@ -2,6 +2,10 @@ package com.example.searchappcompose.app.screens.navigation
 
 sealed class Screen(val route: String) {
     companion object {
+        val screens = listOf(
+            DetailScreen
+        )
+
         const val route_details = "detail"
     }
 
