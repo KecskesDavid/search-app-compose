@@ -1,7 +1,11 @@
 package com.example.searchappcompose.app.screens.navigation
 
 sealed class Screen(val route: String) {
-    object DetailScreen : Screen("detail_screen")
+    companion object {
+        const val route_details = "detail"
+    }
+
+    object DetailScreen : Screen(route_details)
 
     fun withArguments(vararg args: String): String {
         return buildString {

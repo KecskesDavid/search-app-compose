@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.searchappcompose.R
@@ -35,7 +36,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel, navController: NavHostController) {
+fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), navController: NavHostController) {
 
     val state = searchViewModel.state
 

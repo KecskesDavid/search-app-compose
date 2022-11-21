@@ -65,8 +65,7 @@ fun LoadingOverlay(
     val distance = with(LocalDensity.current) { travelDistance.toPx() }
 
     Box(
-        modifier = Modifier.fillMaxSize()//.background(MaterialTheme.colorScheme.secondary)
-            ,
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center,
     ) {
         Row(

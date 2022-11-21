@@ -16,8 +16,6 @@ import com.example.searchappcompose.app.screens.search.SearchViewModel
 @Composable
 fun SearchAppNavHost(
     navController: NavHostController,
-    searchViewModel: SearchViewModel,
-    detailViewModel: DetailViewModel,
     modifier: Modifier? = Modifier
 ) {
     NavHost(
@@ -25,7 +23,7 @@ fun SearchAppNavHost(
         startDestination = BottomNavigationScreens.route_search
     ) {
         composable(BottomNavigationScreens.route_search) {
-            SearchScreen(searchViewModel, navController)
+            SearchScreen(navController = navController)
         }
         composable(BottomNavigationScreens.route_favorites) {
             FavoritesScreen()
@@ -39,7 +37,7 @@ fun SearchAppNavHost(
                     nullable = false
                 }
             )) { entry ->
-            DetailsScreen(detailViewModel, entry.arguments?.getString("webUrl"))
+            DetailsScreen(webUrl = entry.arguments?.getString("webUrl"))
         }
     }
 }

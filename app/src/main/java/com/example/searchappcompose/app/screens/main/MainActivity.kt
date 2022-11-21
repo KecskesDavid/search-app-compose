@@ -11,10 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.searchappcompose.app.core.util.getRoute
 import com.example.searchappcompose.app.screens.details.DetailViewModel
+import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens
+import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.FavoriteScreen
+import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.SearchScreen
+import com.example.searchappcompose.app.screens.navigation.Screen
+import com.example.searchappcompose.app.screens.navigation.Screen.DetailScreen
 import com.example.searchappcompose.app.screens.navigation.SearchAppBottomBar
 import com.example.searchappcompose.app.screens.navigation.SearchAppNavHost
 import com.example.searchappcompose.app.screens.search.SearchViewModel
@@ -24,47 +34,55 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val searchViewModel: SearchViewModel by viewModels()
-    private val detailViewModel: DetailViewModel by viewModels()
-
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-            // searchViewModel.getNews(searchQuery)
-        }
+        ) { }
+
         permissionLauncher.launch(
             arrayOf(
                 Manifest.permission.INTERNET
             )
         )
+
         setContent {
-            SearchApp(
-                searchViewModel,
-                detailViewModel
-            )
+            SearchApp()
         }
     }
 }
 
 @Composable
-fun SearchApp(searchViewModel: SearchViewModel, detailViewModel: DetailViewModel) {
+fun SearchApp() {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
+    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
-    SearchAppComposeTheme() {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    // We want to get the screen so we can decide on the scaffold params
+    val route = navBackStackEntry?.destination?.getRoute()
+
+    // We can decide where we want to show/hide the top/bottom bar
+    bottomBarState.value = when (route) {
+        Screen.route_details -> false
+        BottomNavigationScreens.route_favorites -> true
+        BottomNavigationScreens.route_search -> true
+        else -> false
+    }
+
+    SearchAppComposeTheme {
         Scaffold(
             scaffoldState = scaffoldState,
-            bottomBar = { SearchAppBottomBar(navController) },
+            bottomBar = {
+                if (bottomBarState.value) SearchAppBottomBar(navController)
+            },
             modifier = Modifier.padding(0.dp)
         ) {
             SearchAppNavHost(
                 navController,
-                searchViewModel,
-                detailViewModel,
                 modifier = Modifier.padding(it)
             )
         }
