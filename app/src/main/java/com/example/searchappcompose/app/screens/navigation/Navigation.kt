@@ -26,7 +26,7 @@ fun SearchAppNavHost(
             SearchScreen(navController = navController)
         }
         composable(BottomNavigationScreens.route_favorites) {
-            FavoritesScreen()
+            FavoritesScreen(navController = navController)
         }
         composable(
             route = Screen.DetailScreen.route + "/{webUrl}",

@@ -35,8 +35,8 @@ class FakeNewsRepositoryImpl @Inject constructor(
         return news
     }
 
-    override fun getFavorites(): Flow<List<News>> {
-        TODO("Not yet implemented")
+    override suspend fun getFavorites(): List<NewsInfo> {
+        return listOf()
     }
 
     override suspend fun addToFavorites(newsInfo: NewsInfo) {

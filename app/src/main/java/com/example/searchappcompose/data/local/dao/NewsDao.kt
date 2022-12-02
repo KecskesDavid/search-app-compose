@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NewsDao {
     @Query("SELECT * FROM News")
-    fun getNews(): Flow<List<NewsInfo>>
+    fun getFavorites(): Flow<List<NewsInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToFavorites(newsInfo: NewsInfo)

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
-object DateUtil: DateUtils() {
+object DateUtil : DateUtils() {
     /**
      * Used for news card, when showing the timestamp
      * Returns a string like: 'Posted 13 day(s)' ago, or 'Posted 2
@@ -23,10 +23,10 @@ object DateUtil: DateUtils() {
         val daysFromDate = period.days
         val monthsFromDate = period.months
 
-        return if(daysFromDate < 31) {
-            "Posted $daysFromDate day(s) ago"
-        } else {
-            "Posted $monthsFromDate month(s) ago"
+        return when (daysFromDate) {
+            0 -> "Posted today"
+            in 1..31 -> "Posted $daysFromDate day(s) ago"
+            else -> "Posted $monthsFromDate month(s) ago"
         }
     }
 }
