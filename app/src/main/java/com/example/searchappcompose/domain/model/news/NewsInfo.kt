@@ -11,5 +11,6 @@ data class NewsInfo(
     val snippet: String,
     val datePublished: String,
     val imageUrl: String,
-    val imageThumbnail: String
+    val imageThumbnail: String,
+    var isFavorite: Boolean = false
 )

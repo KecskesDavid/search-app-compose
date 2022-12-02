@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchappcompose.domain.model.news.News
+import com.example.searchappcompose.domain.model.news.NewsInfo
 import com.example.searchappcompose.domain.use_case.news.GetNewsUseCase
 import com.example.searchappcompose.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,19 +39,33 @@ class SearchViewModel @Inject constructor(
                 )
                 getNews(searchQuery)
             }
+
             is SearchEvent.OnAppBarStateChange -> {
                 state = state.copy(
                     appBarState = event.state
                 )
             }
+
+            is SearchEvent.OnAddToFavorites -> {
+                addToFavorites(event.newsInfo)
+            }
         }
     }
 
-    fun getNews(searchQuery: String) {
+    private fun addToFavorites(newsInfo: NewsInfo) {
+        state = state.copy(news = state.news?.map { news ->
+            if (news.id == newsInfo.id) {
+                news.copy(
+                    isFavorite = !news.isFavorite
+                )
+            } else news
+        })
+    }
+
+    private fun getNews(searchQuery: String) {
         viewModelScope.launch {
             // Searching for the query
-            getNewsUseCase(searchQuery, pageNumber, pageSize)
-                .collect { result ->
+            getNewsUseCase(searchQuery, pageNumber, pageSize).collect { result ->
                     when (result) {
                         is Resource.Success -> {
                             state = state.copy(
@@ -60,18 +75,17 @@ class SearchViewModel @Inject constructor(
                             )
                             Log.i(TAG, state.news?.size.toString())
                         }
+
                         is Resource.Error -> {
                             state = state.copy(
-                                news = null,
-                                isLoading = false,
-                                errorMessage = result.message
+                                news = null, isLoading = false, errorMessage = result.message
                             )
                             Log.i(TAG, "Error: " + result.message.toString())
                         }
+
                         is Resource.Loading -> {
                             state = state.copy(
-                                isLoading = true,
-                                errorMessage = null
+                                isLoading = true, errorMessage = null
                             )
                             Log.i(TAG, "Loading: " + result.message.toString())
                         }
