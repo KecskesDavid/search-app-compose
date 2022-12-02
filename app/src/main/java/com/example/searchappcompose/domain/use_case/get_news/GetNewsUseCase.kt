@@ -1,4 +1,4 @@
-package com.example.searchappcompose.domain.use_case.news
+package com.example.searchappcompose.domain.use_case.get_news
 
 import com.example.searchappcompose.domain.repository.NewsRepository
 import com.example.searchappcompose.domain.util.Resource

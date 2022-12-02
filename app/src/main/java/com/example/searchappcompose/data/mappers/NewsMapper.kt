@@ -1,4 +1,4 @@
-package com.example.searchappcompose.data.remote.mappers
+package com.example.searchappcompose.data.mappers
 
 import com.example.searchappcompose.data.remote.dto.news.NewsDataDTO
 import com.example.searchappcompose.domain.model.news.News

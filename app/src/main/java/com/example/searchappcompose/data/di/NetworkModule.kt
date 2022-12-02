@@ -1,7 +1,7 @@
-package com.example.searchappcompose.data.remote.di
+package com.example.searchappcompose.data.di
 
 import com.example.searchappcompose.BuildConfig
-import com.example.searchappcompose.data.remote.consts.Constants
+import com.example.searchappcompose.data.consts.Constants
 import com.example.searchappcompose.data.remote.service.WebSearchApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

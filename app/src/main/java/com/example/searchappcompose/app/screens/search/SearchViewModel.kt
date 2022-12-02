@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
-import com.example.searchappcompose.domain.use_case.news.GetNewsUseCase
+import com.example.searchappcompose.domain.use_case.add_to_favorites.AddToFavoritesUseCase
+import com.example.searchappcompose.domain.use_case.delete_from_favorites.DeleteFromFavoritesUseCase
+import com.example.searchappcompose.domain.use_case.get_news.GetNewsUseCase
 import com.example.searchappcompose.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getNewsUseCase: GetNewsUseCase
+    private val getNews: GetNewsUseCase,
+    private val addToFavorites: AddToFavoritesUseCase,
+    private val deleteFromFavorites: DeleteFromFavoritesUseCase
 ) : ViewModel() {
 
     companion object {
@@ -47,25 +51,35 @@ class SearchViewModel @Inject constructor(
             }
 
             is SearchEvent.OnAddToFavorites -> {
-                addToFavorites(event.newsInfo)
+                handleFavoriteClick(event.newsInfo)
             }
         }
     }
 
-    private fun addToFavorites(newsInfo: NewsInfo) {
+    private fun handleFavoriteClick(newsInfo: NewsInfo) {
+        val updatedNews = newsInfo.copy(
+            isFavorite = !newsInfo.isFavorite
+        )
+
         state = state.copy(news = state.news?.map { news ->
-            if (news.id == newsInfo.id) {
-                news.copy(
-                    isFavorite = !news.isFavorite
-                )
+            if (news.id == updatedNews.id) {
+                updatedNews
             } else news
         })
+
+        viewModelScope.launch {
+            if (updatedNews.isFavorite) {
+                addToFavorites(updatedNews)
+            } else {
+                deleteFromFavorites(updatedNews)
+            }
+        }
     }
 
     private fun getNews(searchQuery: String) {
         viewModelScope.launch {
             // Searching for the query
-            getNewsUseCase(searchQuery, pageNumber, pageSize).collect { result ->
+            getNews(searchQuery, pageNumber, pageSize).collect { result ->
                     when (result) {
                         is Resource.Success -> {
                             state = state.copy(
