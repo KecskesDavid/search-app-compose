@@ -1,9 +1,10 @@
-package com.example.searchappcompose.data.remote.repository
+package com.example.searchappcompose.data.repository
 
 import com.example.searchappcompose.data.remote.service.WebSearchApi
 import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
 import com.example.searchappcompose.domain.repository.NewsRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FakeNewsRepositoryImpl @Inject constructor(
@@ -32,5 +33,17 @@ class FakeNewsRepositoryImpl @Inject constructor(
 
     override suspend fun getNews(query: String, pageNumber: Int, pageSize: Int): News {
         return news
+    }
+
+    override fun getFavorites(): Flow<List<News>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addToFavorites(newsInfo: NewsInfo) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteFromFavorites(newsInfo: NewsInfo) {
+        TODO("Not yet implemented")
     }
 }
