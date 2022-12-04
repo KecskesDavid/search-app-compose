@@ -50,7 +50,7 @@ class SearchViewModel @Inject constructor(
                 )
             }
 
-            is SearchEvent.OnAddToFavorites -> {
+            is SearchEvent.OnFavoritesClicked -> {
                 handleFavoriteClick(event.newsInfo)
             }
         }

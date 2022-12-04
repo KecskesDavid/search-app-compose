@@ -8,6 +8,7 @@ import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
 import com.example.searchappcompose.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import java.security.PrivateKey
 import javax.inject.Inject
 
@@ -28,8 +29,8 @@ class NewsRepositoryImpl @Inject constructor(
         ).toNews()
     }
 
-    override fun getFavorites(): Flow<List<News>> {
-        TODO("Not yet implemented")
+    override suspend fun getFavorites(): List<NewsInfo> {
+        return newsDao.getFavorites().first()
     }
 
     override suspend fun addToFavorites(newsInfo: NewsInfo) {

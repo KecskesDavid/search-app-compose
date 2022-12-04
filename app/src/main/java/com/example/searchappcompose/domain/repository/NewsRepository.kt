@@ -2,6 +2,7 @@ package com.example.searchappcompose.domain.repository
 
 import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
+import com.example.searchappcompose.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
@@ -12,7 +13,7 @@ interface NewsRepository {
         pageSize: Int,
     ) : News
 
-    fun getFavorites(): Flow<List<News>>
+    suspend fun getFavorites(): List<NewsInfo>
 
     suspend fun addToFavorites(newsInfo: NewsInfo)
 
