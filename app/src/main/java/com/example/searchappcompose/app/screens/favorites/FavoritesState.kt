@@ -5,4 +5,6 @@ import com.example.searchappcompose.domain.model.news.NewsInfo
 data class FavoritesState(
     val favorites: List<NewsInfo>? = null,
     val isLoading: Boolean = false,
+    val showDeleteDialog: Boolean = false,
+    val newsToDelete: NewsInfo? = null
 )

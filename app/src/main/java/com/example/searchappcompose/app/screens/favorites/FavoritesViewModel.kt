@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchappcompose.app.screens.search.SearchViewModel
 import com.example.searchappcompose.domain.model.news.NewsInfo
+import com.example.searchappcompose.domain.use_case.delete_from_favorites.DeleteFromFavoritesUseCase
 import com.example.searchappcompose.domain.use_case.get_favorites.GetFavoritesUseCase
 import com.example.searchappcompose.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
     private val getFavorites: GetFavoritesUseCase,
+    private val deleteFromFavorites: DeleteFromFavoritesUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(FavoritesState())
@@ -25,7 +27,35 @@ class FavoritesViewModel @Inject constructor(
 
     fun onEvent(event: FavoritesEvent) {
         when (event) {
-            is FavoritesEvent.OnFavoritesClicked -> {}
+            is FavoritesEvent.OnFavoritesClicked -> {
+                state = state.copy(
+                    showDeleteDialog = true, newsToDelete = event.news
+                )
+            }
+
+            FavoritesEvent.OnDeleteDialogConfirm -> {
+                state.newsToDelete?.let {
+                    handleDeleteFromFavorites(it)
+                }
+            }
+
+            FavoritesEvent.OnDeleteDialogDismiss -> {
+                state = state.copy(
+                    showDeleteDialog = false, newsToDelete = null
+                )
+            }
+        }
+    }
+
+    private fun handleDeleteFromFavorites(newsInfo: NewsInfo) {
+        state = state.copy(
+            showDeleteDialog = false,
+            newsToDelete = null,
+            favorites = state.favorites?.filter { it.id != newsInfo.id }
+        )
+
+        viewModelScope.launch {
+            deleteFromFavorites(newsInfo)
         }
     }
 
