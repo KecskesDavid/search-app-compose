@@ -78,11 +78,13 @@ fun AppDialog(
 @Composable
 fun AppDialogPreview() {
     SearchAppComposeTheme {
-        AppDialog(title = stringResource(id = R.string.remove_favorites_dialog_title),
+        AppDialog(
+            title = stringResource(id = R.string.remove_favorites_dialog_title),
             subTitle = stringResource(id = R.string.remove_favorites_dialog_subtitle),
             confirmButtonText = stringResource(id = R.string.remove_favorites_dialog_confirm_button),
             cancelButtonText = stringResource(id = R.string.remove_favorites_dialog_cancel_button),
             onConfirmButtonClick = {},
-            onCancelButtonClick = {})
+            onCancelButtonClick = {}
+        )
     }
 }
