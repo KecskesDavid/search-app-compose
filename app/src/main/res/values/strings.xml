@@ -4,4 +4,9 @@
 
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
+
+    <string name="remove_favorites_dialog_title">Remove from favorites</string>
+    <string name="remove_favorites_dialog_subtitle">Are you sure you want to remove this news from your favorites list?</string>
+    <string name="remove_favorites_dialog_confirm_button">Yes</string>
+    <string name="remove_favorites_dialog_cancel_button">Cancel</string>
 </resources>
