@@ -6,7 +6,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.searchappcompose.R
-import com.example.searchappcompose.app.core.ui.NewsList
+import com.example.searchappcompose.app.core.ui.news_list.NewsList
 import com.example.searchappcompose.app.core.ui.background.AppBackground
 import com.example.searchappcompose.app.core.ui.dialog.AppDialog
 import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay

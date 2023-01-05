@@ -2,6 +2,7 @@ package com.example.searchappcompose.app.screens.search
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -18,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.searchappcompose.R
 import com.example.searchappcompose.app.core.models.SearchCategory
-import com.example.searchappcompose.app.core.ui.NewsList
+import com.example.searchappcompose.app.core.ui.news_list.NewsList
 import com.example.searchappcompose.app.core.ui.background.AppBackground
 import com.example.searchappcompose.app.core.ui.chip_list.CategoryList
 import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay
@@ -115,7 +117,7 @@ fun MainScreenMainAppBar(
 @Composable
 fun MainScreenTopAppBar(onSearchIconClick: () -> Unit) {
     SmallTopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name)) },
+        title = { Text(text = stringResource(id = R.string.app_name), color = MaterialTheme.colorScheme.onBackground) },
         actions = {
             IconButton(onClick = {
                 onSearchIconClick()
@@ -125,6 +127,9 @@ fun MainScreenTopAppBar(onSearchIconClick: () -> Unit) {
                 )
             }
         },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     )
 }
 
@@ -132,40 +137,47 @@ fun MainScreenTopAppBar(onSearchIconClick: () -> Unit) {
 fun MainScreenTopSearchBar(
     text: String, onQueryChange: (String) -> Unit, closeIconClick: () -> Unit
 ) {
-    SmallTopAppBar(title = {
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = text,
-            onValueChange = { onQueryChange(it) },
-            placeholder = {
-                Text(
-                    modifier = Modifier.alpha(ContentAlpha.medium), text = "Search.."
-                )
-            },
-            textStyle = TextStyle(
-                fontSize = 17.sp
-            ),
-            singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(
-                cursorColor = MaterialTheme.colorScheme.secondary,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                containerColor = MaterialTheme.colorScheme.primary
-            ),
-        )
-    }, navigationIcon = {
-        IconButton(onClick = { onQueryChange(text) }) {
-            Icon(
-                Icons.Filled.Search, "SearchButton"
+    SmallTopAppBar(
+        title = {
+            TextField(
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8)),
+                value = text,
+                onValueChange = { onQueryChange(it) },
+                placeholder = {
+                    Text(
+                        modifier = Modifier.alpha(ContentAlpha.medium),
+                        text = "Search..",
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
+                textStyle = TextStyle(
+                    fontSize = 17.sp
+                ),
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    cursorColor = MaterialTheme.colorScheme.onBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
             )
-        }
-    }, actions = {
-        // RowScope here, so these icons will be placed horizontally
-        IconButton(onClick = { closeIconClick() }) {
-            Icon(Icons.Filled.Close, contentDescription = "Localized description")
-        }
-    }
-
+        },
+        navigationIcon = {
+            IconButton(onClick = { onQueryChange(text) }) {
+                Icon(
+                    Icons.Filled.Search, "SearchButton"
+                )
+            }
+        },
+        actions = {
+            // RowScope here, so these icons will be placed horizontally
+            IconButton(onClick = { closeIconClick() }) {
+                Icon(Icons.Filled.Close, contentDescription = "Localized description")
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     )
 }
 

@@ -1,4 +1,4 @@
-package com.example.searchappcompose.app.core.ui
+package com.example.searchappcompose.app.core.ui.news_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.searchappcompose.app.core.ui.NewsCard
 import com.example.searchappcompose.app.core.ui.item_divider.NewsListDivider
 import com.example.searchappcompose.domain.model.news.NewsInfo
 

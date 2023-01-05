@@ -7,8 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.searchappcompose.app.theme.SearchAppComposeTheme
 
 @Composable
 fun PrimaryButton(
@@ -27,5 +29,13 @@ fun PrimaryButton(
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 14.sp,
         )
+    }
+}
+
+@Preview
+@Composable
+fun PrimaryButtonPreview() {
+    SearchAppComposeTheme {
+        PrimaryButton(text = "Button text", onClick = {})
     }
 }

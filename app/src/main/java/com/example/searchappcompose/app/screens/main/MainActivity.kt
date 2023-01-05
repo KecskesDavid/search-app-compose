@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -81,10 +82,11 @@ fun SearchApp() {
             },
             modifier = Modifier.padding(0.dp)
         ) {
-            SearchAppNavHost(
-                navController,
-                modifier = Modifier.padding(it)
-            )
+            Box(modifier = Modifier.padding(it)) {
+                SearchAppNavHost(
+                    navController
+                )
+            }
         }
     }
 }

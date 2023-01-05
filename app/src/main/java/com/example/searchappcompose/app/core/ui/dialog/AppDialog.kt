@@ -38,7 +38,10 @@ fun AppDialog(
 ) {
     Dialog(onDismissRequest = onCancelButtonClick) {
         Box(
-            contentAlignment = Alignment.Center, modifier = Modifier.clip(RoundedCornerShape(16))
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .clip(RoundedCornerShape(16))
         ) {
             Column(
                 modifier = Modifier
@@ -78,13 +81,11 @@ fun AppDialog(
 @Composable
 fun AppDialogPreview() {
     SearchAppComposeTheme {
-        AppDialog(
-            title = stringResource(id = R.string.remove_favorites_dialog_title),
+        AppDialog(title = stringResource(id = R.string.remove_favorites_dialog_title),
             subTitle = stringResource(id = R.string.remove_favorites_dialog_subtitle),
             confirmButtonText = stringResource(id = R.string.remove_favorites_dialog_confirm_button),
             cancelButtonText = stringResource(id = R.string.remove_favorites_dialog_cancel_button),
             onConfirmButtonClick = {},
-            onCancelButtonClick = {}
-        )
+            onCancelButtonClick = {})
     }
 }
