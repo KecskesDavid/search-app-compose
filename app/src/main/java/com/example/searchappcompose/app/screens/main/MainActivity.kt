@@ -17,18 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.searchappcompose.app.core.util.getRoute
-import com.example.searchappcompose.app.screens.details.DetailViewModel
-import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens
-import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.FavoriteScreen
-import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.SearchScreen
-import com.example.searchappcompose.app.screens.navigation.Screen
-import com.example.searchappcompose.app.screens.navigation.Screen.DetailScreen
+import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.Companion.route_favorites
+import com.example.searchappcompose.app.screens.navigation.BottomNavigationScreens.Companion.route_search
+import com.example.searchappcompose.app.screens.navigation.Screen.Companion.route_details
 import com.example.searchappcompose.app.screens.navigation.SearchAppBottomBar
 import com.example.searchappcompose.app.screens.navigation.SearchAppNavHost
-import com.example.searchappcompose.app.screens.search.SearchViewModel
 import com.example.searchappcompose.app.theme.SearchAppComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +47,10 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.INTERNET
             )
         )
+
+        installSplashScreen().setKeepOnScreenCondition {
+            mainViewModel.isLoading
+        }
 
         setContent {
             SearchApp()
@@ -68,9 +70,8 @@ fun SearchApp() {
 
     // We can decide where we want to show/hide the top/bottom bar
     bottomBarState.value = when (route) {
-        Screen.route_details -> false
-        BottomNavigationScreens.route_favorites -> true
-        BottomNavigationScreens.route_search -> true
+        route_details -> false
+        route_favorites, route_search -> true
         else -> false
     }
 
