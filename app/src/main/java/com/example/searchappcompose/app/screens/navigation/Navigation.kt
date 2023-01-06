@@ -8,10 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.searchappcompose.app.screens.details.DetailsScreen
-import com.example.searchappcompose.app.screens.details.DetailViewModel
 import com.example.searchappcompose.app.screens.favorites.FavoritesScreen
 import com.example.searchappcompose.app.screens.search.SearchScreen
-import com.example.searchappcompose.app.screens.search.SearchViewModel
 
 @Composable
 fun SearchAppNavHost(
