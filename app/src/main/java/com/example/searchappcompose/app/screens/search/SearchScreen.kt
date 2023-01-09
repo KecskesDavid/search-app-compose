@@ -49,7 +49,7 @@ fun SearchScreen(
             })
 
         Column(modifier = Modifier.fillMaxSize()) {
-            CategoryList(content = getDummyData(), {})
+            CategoryList(content = searchViewModel.state.filters, {})
 
             if (state.isLoading) {
                 LoadingOverlay()
@@ -180,10 +180,3 @@ fun MainScreenTopSearchBar(
         )
     )
 }
-
-private fun getDummyData() = mutableListOf(
-    SearchCategory("Politics", iconId = null),
-    SearchCategory("Sport", iconId = null),
-    SearchCategory("News", iconId = null, isSelected = true),
-    SearchCategory("Other", iconId = null),
-)

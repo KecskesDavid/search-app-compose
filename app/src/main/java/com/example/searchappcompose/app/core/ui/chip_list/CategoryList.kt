@@ -15,22 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.example.searchappcompose.app.core.models.SearchCategory
 
 @Composable
-@Preview
-fun CategoryListPreview() {
-    val searchList = mutableListOf(
-        SearchCategory("Politics", iconId = null),
-        SearchCategory("Sport", iconId = null, isSelected = true),
-        SearchCategory("Sport", iconId = null),
-        SearchCategory("Sport", iconId = null),
-        SearchCategory("Sport", iconId = null),
-    )
-
-    CategoryList(content = searchList, {})
-}
-
-@Composable
 fun CategoryList(
-    content: List<SearchCategory>,
+    content: List<SearchCategory>?,
     onSearchClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -40,7 +26,7 @@ fun CategoryList(
             .horizontalScroll(scrollState)
             .padding(8.dp)
     ) {
-        content.forEach {
+        content?.forEach {
             CategoryChip(category = it, onSearchClick)
             Spacer(modifier = Modifier.width(8.dp))
         }

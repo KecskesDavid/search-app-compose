@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.searchappcompose.app.core.models.SearchCategory
 import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
 import com.example.searchappcompose.domain.use_case.add_to_favorites.AddToFavoritesUseCase
@@ -53,7 +54,23 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.OnFavoritesClicked -> {
                 handleFavoriteClick(event.newsInfo)
             }
+
+            is SearchEvent.OnCategoryClicked -> {
+                handleSearchCategoryClick(event.category)
+            }
         }
+    }
+
+    private fun handleSearchCategoryClick(category: SearchCategory) {
+        category.isSelected = !category.isSelected
+
+        state = state.copy(
+            filters = state.filters?.map {
+                if(it == category) {
+                    category
+                } else it
+            }
+        )
     }
 
     private fun handleFavoriteClick(newsInfo: NewsInfo) {

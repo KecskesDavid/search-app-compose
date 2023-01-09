@@ -1,7 +1,14 @@
 package com.example.searchappcompose.app.core.models
 
-data class SearchCategory(
+enum class SearchCategory(
     val categoryName: String,
-    val isSelected: Boolean = false,
-    val iconId: Int?
-)
+    var isSelected: Boolean = false,
+    val iconId: Int? = null
+) {
+    Politics("Politics"),
+    Sport("Sport"),
+    Foreign("Foreign"),
+    News("News"),
+    Business("Business"),
+    Historical("Historical ")
+}
