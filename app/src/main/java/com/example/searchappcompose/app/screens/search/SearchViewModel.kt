@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.searchappcompose.app.core.models.SearchCategory
 import com.example.searchappcompose.domain.model.news.News
 import com.example.searchappcompose.domain.model.news.NewsInfo
 import com.example.searchappcompose.domain.use_case.add_to_favorites.AddToFavoritesUseCase
@@ -33,6 +34,8 @@ class SearchViewModel @Inject constructor(
     var state by mutableStateOf(SearchScreenState())
         private set
 
+    private var originalNewsList = emptyList<NewsInfo>()
+
     fun onEvent(event: SearchEvent) {
         when (event) {
             is SearchEvent.OnQueryEntered -> {
@@ -53,6 +56,38 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.OnFavoritesClicked -> {
                 handleFavoriteClick(event.newsInfo)
             }
+
+            is SearchEvent.OnSearchCategoryClicked -> {
+                handleSearchCategoryClick(event.category)
+            }
+        }
+    }
+
+    private fun handleSearchCategoryClick(category: SearchCategory) {
+        state = state.copy(
+            filters = state.filters?.map {
+                if (it.categoryName == category.categoryName) {
+                    it.copy(isSelected = !it.isSelected)
+                } else it
+            }
+        )
+
+        filterSearchList()
+    }
+
+    private fun filterSearchList() {
+        val filterList = state.filters?.filter { it.isSelected } ?: return
+
+        state = if (filterList.isEmpty()) {
+            state.copy(
+                news = originalNewsList
+            )
+        } else {
+            state.copy(
+                news = state.news?.filter { newsInfo ->
+                    filterList.map { newsInfo.body.contains(it.categoryName) }.contains(true)
+                }
+            )
         }
     }
 
@@ -80,31 +115,34 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             // Searching for the query
             getNews(searchQuery, pageNumber, pageSize).collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            state = state.copy(
-                                news = (result.data as News).news,
-                                isLoading = false,
-                                errorMessage = null
-                            )
-                            Log.i(TAG, state.news?.size.toString())
-                        }
+                when (result) {
+                    is Resource.Success -> {
+                        val news = (result.data as News).news
 
-                        is Resource.Error -> {
-                            state = state.copy(
-                                news = null, isLoading = false, errorMessage = result.message
-                            )
-                            Log.i(TAG, "Error: " + result.message.toString())
-                        }
+                        originalNewsList = news
+                        state = state.copy(
+                            news = news,
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                        Log.i(TAG, state.news?.size.toString())
+                    }
 
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = true, errorMessage = null
-                            )
-                            Log.i(TAG, "Loading: " + result.message.toString())
-                        }
+                    is Resource.Error -> {
+                        state = state.copy(
+                            news = null, isLoading = false, errorMessage = result.message
+                        )
+                        Log.i(TAG, "Error: " + result.message.toString())
+                    }
+
+                    is Resource.Loading -> {
+                        state = state.copy(
+                            isLoading = true, errorMessage = null
+                        )
+                        Log.i(TAG, "Loading: " + result.message.toString())
                     }
                 }
+            }
         }
     }
 }
