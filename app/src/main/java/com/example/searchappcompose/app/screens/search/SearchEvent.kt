@@ -7,5 +7,5 @@ sealed class SearchEvent {
     data class OnQueryEntered(val query: String) : SearchEvent()
     data class OnAppBarStateChange(val state: AppBarState) : SearchEvent()
     data class OnFavoritesClicked(val newsInfo: NewsInfo) : SearchEvent()
-    data class OnCategoryClicked(val category: SearchCategory) : SearchEvent()
+    data class OnSearchCategoryClicked(val category: SearchCategory) : SearchEvent()
 }

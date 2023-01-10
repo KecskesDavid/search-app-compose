@@ -1,14 +1,18 @@
 package com.example.searchappcompose.app.core.models
 
-enum class SearchCategory(
+data class SearchCategory(
     val categoryName: String,
     var isSelected: Boolean = false,
     val iconId: Int? = null
 ) {
-    Politics("Politics"),
-    Sport("Sport"),
-    Foreign("Foreign"),
-    News("News"),
-    Business("Business"),
-    Historical("Historical ")
+    companion object {
+        fun getList() = mutableListOf(
+            SearchCategory(categoryName = "Politics"),
+            SearchCategory(categoryName = "Sport"),
+            SearchCategory(categoryName = "Foreign"),
+            SearchCategory(categoryName = "News"),
+            SearchCategory(categoryName = "Business"),
+            SearchCategory(categoryName = "Historical"),
+        )
+    }
 }

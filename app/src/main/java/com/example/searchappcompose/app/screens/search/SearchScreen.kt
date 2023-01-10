@@ -19,11 +19,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.searchappcompose.R
-import com.example.searchappcompose.app.core.models.SearchCategory
-import com.example.searchappcompose.app.core.ui.news_list.NewsList
 import com.example.searchappcompose.app.core.ui.background.AppBackground
 import com.example.searchappcompose.app.core.ui.chip_list.CategoryList
 import com.example.searchappcompose.app.core.ui.loading_overlay.LoadingOverlay
+import com.example.searchappcompose.app.core.ui.news_list.NewsList
 import com.example.searchappcompose.app.screens.navigation.Screen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -36,7 +35,8 @@ fun SearchScreen(
     val state = searchViewModel.state
 
     AppBackground {
-        MainScreenMainAppBar(state.appBarState,
+        MainScreenMainAppBar(
+            appBarState = state.appBarState,
             searchQuery = state.searchQuery,
             onSearchIconClick = {
                 searchViewModel.onEvent(SearchEvent.OnAppBarStateChange(AppBarState.OPENED))
@@ -49,7 +49,11 @@ fun SearchScreen(
             })
 
         Column(modifier = Modifier.fillMaxSize()) {
-            CategoryList(content = searchViewModel.state.filters, {})
+            CategoryList(
+                content = state.filters,
+                onSearchCategoryClick = { category ->
+                    searchViewModel.onEvent(SearchEvent.OnSearchCategoryClicked(category))
+                })
 
             if (state.isLoading) {
                 LoadingOverlay()
@@ -117,7 +121,12 @@ fun MainScreenMainAppBar(
 @Composable
 fun MainScreenTopAppBar(onSearchIconClick: () -> Unit) {
     SmallTopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name), color = MaterialTheme.colorScheme.onBackground) },
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
         actions = {
             IconButton(onClick = {
                 onSearchIconClick()
@@ -140,7 +149,9 @@ fun MainScreenTopSearchBar(
     SmallTopAppBar(
         title = {
             TextField(
-                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8)),
                 value = text,
                 onValueChange = { onQueryChange(it) },
                 placeholder = {
