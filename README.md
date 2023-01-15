@@ -1,7 +1,7 @@
 # Search application compose
 Small application for learning the basics of Jetpack Compose. Using a dummy API (https://rapidapi.com/contextualwebsearch/api/web-search/) with MVI and Clean Architecture.
 
-## 🛠 Used Libraries:
+## 🛠 Tech Corner:
 
 - Kotlin
 - MVI
@@ -17,7 +17,9 @@ Small application for learning the basics of Jetpack Compose. Using a dummy API 
 - Material Design 3
 - SOLID
 
-## 🎥 Demo video:
+## 🎥 Demo Video:
 
-https://user-images.githubusercontent.com/57193958/212553618-3bba609e-1055-42d4-9eed-fe467b81ad7f.mp4
+
+
+https://user-images.githubusercontent.com/57193958/212554399-df274ac2-209a-40d1-879f-101f60516a7c.mp4
 
